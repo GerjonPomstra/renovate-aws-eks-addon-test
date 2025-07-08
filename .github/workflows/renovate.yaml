@@ -1,0 +1,58 @@
+name: renovate
+on:
+  workflow_dispatch:
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    environment: ci
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      security-events: read
+      packages: read
+      issues: write
+      checks: write
+      statuses: write
+    env:
+      AWS_REGION: eu-central-1
+      AWS_ASSUME_ROLE: arn:aws:iam::852318003143:role/test-renovate
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - name: Configure AWS credentials for Renovate EKS Addons
+        id: aws-creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ASSUME_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: "renovatebot"
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
+          output-credentials: true
+
+      - name: Sanity check AWS credentials
+        run: |
+          aws sts get-caller-identity
+          aws eks describe-addon-versions --addon-name vpc-cni --region ${{ env.AWS_REGION }}
+
+      - name: Debug AWS env before Renovate
+        run: env | grep AWS
+
+      - name: Renovate
+        uses: renovatebot/github-action@v43.0.2
+        with:
+          configurationFile: .github/renovate.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          RENOVATE_AUTODISCOVER: true
+          LOG_LEVEL: debug
+          AWS_REGION: ${{ env.AWS_REGION }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+          AWS_ACCESS_KEY_ID: "${{ env.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_ACCESS_KEY: "${{ env.AWS_SECRET_ACCESS_KEY }}"
+          AWS_SESSION_TOKEN: "${{ env.AWS_SESSION_TOKEN }}"
+          AWS_ASSUME_ROLE: "${{ env.AWS_ASSUME_ROLE }}"

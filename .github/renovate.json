@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "aws-eks-addon",
+      "fileMatch": ["^versions.tf$"],
+      "matchStrings": [
+        ".*# renovate: eksAddonsFilter=(?<packageName>.*?)\n.*?[a-zA-Z0-9-_:]*[ ]*?[:|=][ ]*?[\"|']?(?<currentValue>[a-zA-Z0-9-_.]+)[\"|']?.*"
+      ]
+    }
+  ],
+  "enabledManagers": ["custom.regex"],
+  "labels": ["dependencies", "renovate"],
+  "prConcurrentLimit": 20,
+  "prHourlyLimit": 0,
+  "allowedEnv": ["AWS_*"]
+}
