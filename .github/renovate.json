@@ -1,9 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
-  "customManagers": [
+  "regexManagers": [
     {
-      "customType": "regex",
       "datasourceTemplate": "aws-eks-addon",
       "fileMatch": ["^versions.tf$"],
       "matchStrings": [
@@ -11,7 +10,7 @@
       ]
     }
   ],
-  "enabledManagers": ["custom.regex"],
+  "enabledManagers": ["regex"],
   "labels": ["dependencies", "renovate"],
   "prConcurrentLimit": 20,
   "prHourlyLimit": 0
