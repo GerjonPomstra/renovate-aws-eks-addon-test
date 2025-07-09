@@ -47,6 +47,7 @@ jobs:
         with:
           configurationFile: .github/renovate.json
           token: ${{ secrets.GITHUB_TOKEN }}
+          env-regex: "^(?:RENOVATE_\\w+|LOG_LEVEL|AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY|AWS_SESSION_TOKEN|AWS_REGION|AWS_DEFAULT_REGION)$"
         env:
           RENOVATE_AUTODISCOVER: true
           LOG_LEVEL: debug
