@@ -14,5 +14,6 @@
   "enabledManagers": ["custom.regex"],
   "labels": ["dependencies", "renovate"],
   "prConcurrentLimit": 20,
-  "prHourlyLimit": 0
+  "prHourlyLimit": 0,
+  "exposeAllEnv": true
 }
