@@ -13,7 +13,15 @@
   ],
   "enabledManagers": ["custom.regex"],
   "labels": ["dependencies", "renovate"],
+  "packageRules": [
+    {
+      "groupName": "AWS EKS Addons",
+      "groupSlug": "aws-eks-addons",
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["aws-eks-addon"],
+      "matchPackageNames": ["*"]
+    }
+  ],
   "prConcurrentLimit": 20,
-  "prHourlyLimit": 0,
-  "exposeAllEnv": true
+  "prHourlyLimit": 0
 }

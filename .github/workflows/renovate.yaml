@@ -34,14 +34,6 @@ jobs:
           role-skip-session-tagging: true
           output-credentials: true
 
-      - name: Sanity check AWS credentials
-        run: |
-          aws sts get-caller-identity
-          aws eks describe-addon-versions --addon-name vpc-cni --region ${{ env.AWS_REGION }}
-
-      - name: Debug AWS env before Renovate
-        run: env | grep AWS
-
       - name: Renovate
         uses: renovatebot/github-action@v43.0.2
         with:
@@ -56,4 +48,3 @@ jobs:
           AWS_ACCESS_KEY_ID: "${{ env.AWS_ACCESS_KEY_ID }}"
           AWS_SECRET_ACCESS_KEY: "${{ env.AWS_SECRET_ACCESS_KEY }}"
           AWS_SESSION_TOKEN: "${{ env.AWS_SESSION_TOKEN }}"
-          AWS_ASSUME_ROLE: "${{ env.AWS_ASSUME_ROLE }}"
